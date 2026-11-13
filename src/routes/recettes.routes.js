@@ -10,6 +10,15 @@ router.get('/', async (req, res) => {
         recettes = recettes.filter(recette => recette.categorie === req.query.categorie)
     }
 
+    if (req.query.pays) {
+        recettes = recettes.filter(recette => recette.pays === req.query.pays)
+    }
+
+    if (req.query.nom) {
+        recettes = recettes.filter(recette =>
+            recette.nom.toLowerCase().includes(req.query.nom.toLowerCase()))
+    }
+
     res.json(recettes)
 })
 
