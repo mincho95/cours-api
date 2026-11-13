@@ -2,6 +2,8 @@ const BASE = 'https://www.themealdb.com/api/json/v1/1'
 
 const LETTRES = 'abcdefghijklmnopqrstuvwxyz'
 
+let cache = null
+
 function nettoyer (recette) {
     const ingredients = []
 
@@ -26,6 +28,10 @@ function nettoyer (recette) {
 }
 
 export async function chercherRecettes () {
+    if (cache) {
+        return cache
+    }
+
     const tous = []
 
     for (const lettre of LETTRES) {
@@ -39,5 +45,7 @@ export async function chercherRecettes () {
         }
     }
 
-    return tous.map(nettoyer)
+    cache = tous.map(nettoyer)
+
+    return cache
 }
