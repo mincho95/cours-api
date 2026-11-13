@@ -1,8 +1,29 @@
-// Ce fichier est le seul à connaître l'API d'en face (TheMealDB).
-// BASE est l'adresse de départ de toutes nos requêtes.
 const BASE = 'https://www.themealdb.com/api/json/v1/1'
 
 const LETTRES = 'abcdefghijklmnopqrstuvwxyz'
+
+function nettoyer (recette) {
+    const ingredients = []
+
+    for (let i = 1; i <= 20; i++) {
+        const nom = recette['strIngredient' + i]
+        const quantite = recette['strMeasure' + i]
+
+        if (nom) {
+            ingredients.push({ nom: nom, quantite: quantite })
+        }
+    }
+
+    return {
+        id : recette.idMeal,
+        nom : recette.strMeal,
+        categorie : recette.strCategory,
+        pays : recette.strCountry,
+        image : recette.strMealThumb,
+        ingredients : ingredients,
+        nbIngredients : ingredients.length
+    }
+}
 
 export async function chercherRecettes () {
     const tous = []
@@ -18,5 +39,5 @@ export async function chercherRecettes () {
         }
     }
 
-    return tous
+    return tous.map(nettoyer)
 }
