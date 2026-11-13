@@ -1,8 +1,11 @@
 import express from 'express'
+import cors from 'cors'
 import recettesRoutes from './routes/recettes.routes.js'
 import statsRoutes from './routes/stats.routes.js'
 
 const app = express()
+
+app.use(cors())
 
 app.use('/api/recettes', recettesRoutes)
 app.use('/api/stats', statsRoutes)
