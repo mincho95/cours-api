@@ -49,3 +49,14 @@ export async function chercherRecettes () {
 
     return cache
 }
+
+export async function chercherRecetteParId (id) {
+    const reponse = await fetch(BASE + '/lookup.php?i=' + id)
+    const donnees = await reponse.json()
+
+    if (!donnees.meals || donnees.meals === 'Invalid ID') {
+        return null
+    }
+
+    return nettoyer(donnees.meals[0])
+}

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { chercherRecettes } from '../services/themealdb.service.js'
+import { chercherRecettes, chercherRecetteParId } from '../services/themealdb.service.js'
 
 const router = Router()
 
@@ -7,6 +7,16 @@ router.get('/', async (req, res) => {
     const recettes = await chercherRecettes()
 
     res.json(recettes)
+})
+
+router.get('/:id', async (req, res) => {
+    const recette = await chercherRecetteParId(req.params.id)
+
+    if (!recette) {
+        return res.status(404).json({ erreur: 'Recette introuvable' })
+    }
+
+    res.json(recette)
 })
 
 export default router
