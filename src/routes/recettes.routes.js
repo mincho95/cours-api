@@ -4,7 +4,11 @@ import { chercherRecettes, chercherRecetteParId } from '../services/themealdb.se
 const router = Router()
 
 router.get('/', async (req, res) => {
-    const recettes = await chercherRecettes()
+    let recettes = await chercherRecettes()
+
+    if (req.query.categorie) {
+        recettes = recettes.filter(recette => recette.categorie === req.query.categorie)
+    }
 
     res.json(recettes)
 })
