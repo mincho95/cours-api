@@ -19,7 +19,23 @@ router.get('/', async (req, res) => {
             recette.nom.toLowerCase().includes(req.query.nom.toLowerCase()))
     }
 
-    res.json(recettes)
+    const PAR_PAGE = 20
+    const total = recettes.length
+    const nbPages = Math.ceil(total / PAR_PAGE)
+    const page = Number(req.query.page) || 1
+
+    if (page < 1 || (nbPages > 0 && page > nbPages)) {
+        return res.status(404).json({ erreur: 'Cette page n existe pas' })
+    }
+
+    const debut = (page - 1) * PAR_PAGE
+
+    res.json({
+        page,
+        nbPages,
+        total,
+        recettes: recettes.slice(debut, debut + PAR_PAGE)
+    })
 })
 
 router.get('/:id', async (req, res) => {
